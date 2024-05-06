@@ -35,6 +35,10 @@ export default function App() {
             <Forecast />
           </div>
         </div>
+        <p>
+          <a href="https://github.com/Its-Shio/weather-app-react">Code</a> by{" "}
+          <a href="https://github.com/Its-Shio">Dominica Kelly</a>
+        </p>
         <script src="src/index.js"></script>
       </body>
     </html>
