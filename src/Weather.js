@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import DefaultImg from "./DefaultImg";
+import WeatherInfo from "./WeatherInfo";
 import "./styles.css";
 import axios from "axios";
 
-export default function Weather() {
+export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
+  const [city, setCity] = useState(props.defaultCity);
 
   function handleResponse(response) {
     console.log(response.data);
@@ -20,20 +21,52 @@ export default function Weather() {
       temperature: response.data.main.temp,
       wind: response.data.wind,
       city: response.data.name,
-      country: response.data.country,
+      country: response.data.sys.country,
       image: `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
       wind: response.data.wind.speed,
       humidity: response.data.main.humidity,
-      date: "Tuesday 12:30",
+      date: new Date(response.data.dt * 1000),
       desc: tempDesc,
     });
+  }
+
+  function search() {
+    const apiKey = "25fad9f7e87157d33dde0f82ab269ee8";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+  function updateCity(event) {
+    setCity(event.target.value);
+  }
+
+  function clickCurrent(event) {
+    event.preventDefault();
+    navigator.geolocation.getCurrentPosition(setCurrent);
+  }
+
+  function setCurrent(position) {
+    const apiKey = "25fad9f7e87157d33dde0f82ab269ee8";
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
   }
 
   if (weatherData.ready) {
     return (
       <div>
-        <form>
-          <input type="text" id="cityInput" placeholder="Enter a city" />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter a city"
+            onChange={updateCity}
+          />
           <input
             className="submitBtn"
             type="submit"
@@ -41,77 +74,15 @@ export default function Weather() {
             id="btnSubmit"
           />
         </form>
-        <button className="currentBtn" id="btnCurrent">
+        <button className="currentBtn" id="btnCurrent" onClick={clickCurrent}>
           Current
         </button>
         <br />
-        <div className="city" id="cityName">
-          {weatherData.city}, {weatherData.country}
-        </div>
-        <div className="mainText">
-          <span id="dateTime"> {weatherData.date}, </span>
-          <span id="weatherType">{weatherData.desc}</span>
-        </div>
-        <div class="mainText">
-          <span>
-            Humidity:{" "}
-            <span class="humidityWindData" id="humidityText">
-              {weatherData.humidity}%
-            </span>
-            ,{" "}
-          </span>
-          <span>
-            Wind Speed:{" "}
-            <span class="humidityWindData" id="windText">
-              {Math.round(weatherData.wind)}
-            </span>
-            <span class="humidityWindData" id="windUnits">
-              km/h
-            </span>
-          </span>
-        </div>
-        <img class="weatherImg" src={weatherData.image}></img>
-        <div className="temperature">
-          <span className="temperatureNum" id="tempNum" value="1">
-            {Math.round(weatherData.temperature)}
-          </span>
-          <span className="units">
-            <a id="celsius" href="#">
-              °C
-            </a>{" "}
-            |
-            <a id="fahrenheit" href="#">
-              °F
-            </a>
-          </span>
-        </div>
-
-        <div className="mainText">5-Day Forecast</div>
-        <div className="forecast">
-          <div className="forecastDay">
-            Fri <DefaultImg /> 24° 14°
-          </div>
-          <div className="forecastDay">
-            Sat <DefaultImg /> 25°/13°
-          </div>
-          <div className="forecastDay">
-            Sun <DefaultImg /> 26°/14°
-          </div>
-          <div className="forecastDay">
-            Mon <DefaultImg /> 27°/14°
-          </div>
-          <div className="forecastDay">
-            Tue <DefaultImg /> 28°/14°
-          </div>
-        </div>
+        <WeatherInfo data={weatherData} />
       </div>
     );
   } else {
-    const apiKey = "25fad9f7e87157d33dde0f82ab269ee8";
-    let city = "Rivne";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(handleResponse);
-
+    search();
     return "Loading...";
   }
 }
