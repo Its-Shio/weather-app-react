@@ -1,10 +1,7 @@
 import "./styles.css";
-import React from "react";
-import DefaultImg from "./DefaultImg";
-import Search from "./Search";
-import Temperature from "./Temperature";
-import Forecast from "./Forecast";
-//
+import React, { useState } from "react";
+import Weather from "./Weather";
+
 export default function App() {
   return (
     <html lang="en">
@@ -22,17 +19,7 @@ export default function App() {
       <body>
         <div className="container">
           <div className="weather">
-            <Search />
-            <br />
-            <div className="city" id="cityName">
-              Pittsburgh PA, United States
-            </div>
-            <div className="mainText" id="dateTime">
-              Thursday 13:00
-            </div>
-            <DefaultImg />
-            <Temperature />
-            <Forecast />
+            <Weather />
           </div>
         </div>
         <p>
