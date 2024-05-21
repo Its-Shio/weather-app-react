@@ -1,0 +1,12 @@
+.WeatherForecast {
+  display: inline-block;
+  text-align: center;
+}
+.min {
+  opacity: 0.6;
+  margin-left: 5px;
+}
+.ForecastImg {
+  width: 50px;
+  filter: brightness(80%);
+}

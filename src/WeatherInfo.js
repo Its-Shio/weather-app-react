@@ -1,9 +1,9 @@
 import React from "react";
 import FormattedDate from "./FormattedDate";
-import DefaultImg from "./DefaultImg";
 import Temperature from "./Temperature";
 
 export default function WeatherInfo(props) {
+  console.log(props.data.date);
   return (
     <span>
       <div className="city" id="cityName">
@@ -37,23 +37,6 @@ export default function WeatherInfo(props) {
       <Temperature celsius={props.data.temperature} />
 
       <div className="mainText">5-Day Forecast</div>
-      <div className="forecast">
-        <div className="forecastDay">
-          Fri <DefaultImg /> 24° 14°
-        </div>
-        <div className="forecastDay">
-          Sat <DefaultImg /> 25°/13°
-        </div>
-        <div className="forecastDay">
-          Sun <DefaultImg /> 26°/14°
-        </div>
-        <div className="forecastDay">
-          Mon <DefaultImg /> 27°/14°
-        </div>
-        <div className="forecastDay">
-          Tue <DefaultImg /> 28°/14°
-        </div>
-      </div>
     </span>
   );
 }

@@ -34,7 +34,7 @@
   color: #5c636d;
   text-align: center;
 }
-img {
+.weatherImg {
   display: block;
   margin: 0 auto;
 }
@@ -55,9 +55,8 @@ a:link {
   top: -39px;
 }
 .forecast {
-  display: flex;
   margin: 15px auto;
-  max-width: 500px;
+  max-width: 450px;
   padding: 10px;
   border: 2px solid #91a0b3;
   border-radius: 6px;
